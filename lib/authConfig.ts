@@ -7,7 +7,7 @@ export interface NSession extends Session{
   id:string | undefined
 }
 const authConfig : AuthOptions = {
-    secret:process.env.SECRET,
+    secret:process.env.NEXTAUTH_SECRET,
     providers: [
         CredentialsProvider({
           name: 'Credentials',

@@ -18,6 +18,9 @@ const employeeSchema = new mongoose.Schema({
     img:{
         type:String
     },
+    departmentIds:{
+        type:[mongoose.Types.ObjectId]
+    }
 },{timestamps:true})
 
 

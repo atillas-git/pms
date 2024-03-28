@@ -1,7 +1,7 @@
 import mongoose from "@/lib/mongodb";
 
-const employeeRole = new mongoose.Schema({
-    employeeId:{
+const departmentRole = new mongoose.Schema({
+    departmentId:{
         type:mongoose.Types.ObjectId,
         required:true
     },
@@ -12,4 +12,4 @@ const employeeRole = new mongoose.Schema({
 },{timestamps:true})
 
 
-export default mongoose.models.EmployeeRole || mongoose.model("EmployeeRole",employeeRole)
+export default mongoose.models.DepartmentRole || mongoose.model("DepartmentRole",departmentRole)
