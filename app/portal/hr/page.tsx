@@ -11,6 +11,7 @@ interface SearchParams {
   id?: string;
   username?: string;
   email?: string;
+  permissions?:string []
   page?: string;
 }
 
@@ -21,6 +22,7 @@ const Hr = async ({ searchParams }: IProps) => {
     id: searchParams["id"],
     username: searchParams["username"],
     email: searchParams["email"],
+    permissions:searchParams["permissions"]
   };
 
   Object.keys(payload).forEach(
@@ -29,14 +31,30 @@ const Hr = async ({ searchParams }: IProps) => {
       delete payload[key as keyof SearchParams],
   );
 
-  const employees: TEmployee[] = await Employee.find(payload)
+  const employees: TEmployee[] = await Employee.find({
+    ...payload,
+    username:{
+      $regex:payload.username || ""
+    },
+    email:{
+      $regex:payload.email || ""
+    }
+  })
     .skip(skip)
     .limit(7);
-  const query = await Employee.countDocuments(payload);
+  const query = await Employee.countDocuments({
+    ...payload,
+    username:{
+      $regex:payload.username || ""
+    },
+    email:{
+      $regex:payload.email || ""
+    }
+  });
   const pageCount = Math.ceil(query / 7);
 
   return (
-    <div className="p-7 sm:p-12 h-full">
+    <div className="p-7 sm:p-12 h-screen">
       <HrPage employees={employees} pageCount={pageCount} />
     </div>
   );

@@ -35,6 +35,7 @@ const EmployeeForm = ({ employee, setSheetOpen }: IProps) => {
     userpermissions.filter((permission: string) =>
       ["administrator", "hr.manager"].includes(permission),
     ).length > 0;
+    
   useEffect(() => {
     if (employee) {
       setUsername(employee.username);

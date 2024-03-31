@@ -23,6 +23,8 @@ import {
   X,
   Loader2,
   BookOpen,
+  Search,
+  Columns3,
 } from "lucide-react";
 import EmployeeForm from "./EmployeeForm";
 import { Drawer, IconButton } from "@mui/material";
@@ -53,6 +55,7 @@ import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
 import NoContent from "../shared/NoContent";
 import { SessionProvider } from "next-auth/react";
+import SearchForm from "./SearchForm";
 
 interface IProps {
   employees: TEmployee[];
@@ -110,6 +113,11 @@ const HrPage = ({ employees, pageCount }: IProps) => {
     }
   };
 
+  const handleSearchClick = ()=>{
+    setActiveStep(3)
+    setSheetOpen(true)
+  }
+
   return (
     <div className="flex flex-col gap-2 h-full">
       <Breadcrumb>
@@ -140,6 +148,7 @@ const HrPage = ({ employees, pageCount }: IProps) => {
                 className="flex gap-2 cursor-pointer"
                 onClick={handleAddEditEmployee}
               >
+                <Columns3/>
                 Export to Excel
               </DropdownMenuItem>
               <DropdownMenuItem
@@ -155,6 +164,11 @@ const HrPage = ({ employees, pageCount }: IProps) => {
               >
                 <BookUser />
                 Bulk Import Employees
+              </DropdownMenuItem>
+              <DropdownMenuItem 
+                className="flex gap-2 cursor-pointer" onClick={handleSearchClick}>
+                    <Search/>
+                    Search Employee
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -176,6 +190,9 @@ const HrPage = ({ employees, pageCount }: IProps) => {
               )}
               {activeStep === 2 && (
                 <p className="text-xl font-semibold">Add - Edit Employee</p>
+              )}
+              {activeStep === 3 && (
+                <p className="text-xl font-semibold">Search Employees</p>
               )}
             </div>
             <div>
@@ -202,6 +219,7 @@ const HrPage = ({ employees, pageCount }: IProps) => {
                 <EmployeeForm setSheetOpen={setSheetOpen} />
               </SessionProvider>
             )}
+            {activeStep === 3 && <SearchForm />}
           </div>
         </div>
       </Drawer>
@@ -209,7 +227,7 @@ const HrPage = ({ employees, pageCount }: IProps) => {
         <>
           <Table className="overflow-x-auto rounded-md">
             <TableCaption>List of your employees</TableCaption>
-            <TableHeader className="bg-zinc-800 rounded-md">
+            <TableHeader className="bg-zinc-900  hover:bg-zinc-800 rounded-md">
               <TableRow>
                 <TableHead className="text-zinc-50">Username</TableHead>
                 <TableHead className="text-zinc-50">Email</TableHead>
