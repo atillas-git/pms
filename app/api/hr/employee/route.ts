@@ -62,7 +62,7 @@ export async function PUT(request: Request) {
         session &&
         session.permissions &&
         session.permissions.filter((permission: string) =>
-          ["hr.manager"].includes(permission),
+          ["hr.manager","administrator"].includes(permission),
         ).length <= 0
       ) {
         throw new Error("Invalid Permssions");

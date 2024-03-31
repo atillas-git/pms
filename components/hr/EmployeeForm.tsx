@@ -12,7 +12,7 @@ import { useSession } from "next-auth/react";
 import { NSession } from "@/lib/authConfig";
 
 interface IProps {
-  employee: TEmployee | null;
+  employee?: TEmployee | null;
   setSheetOpen :React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -31,6 +31,7 @@ const EmployeeForm = ({ employee ,setSheetOpen}: IProps) => {
 
   const userpermissions :string [] = data ? (data as NSession).permissions : []
 
+  const isPermissionAuth  = userpermissions.filter((permission:string)=>["administrator","hr.manager"].includes(permission)).length>0
   useEffect(() => {
     if (employee) {
       setUsername(employee.username);
@@ -142,7 +143,7 @@ const EmployeeForm = ({ employee ,setSheetOpen}: IProps) => {
         <Input
           id="email"
           value={email}
-          disabled = {employee?.email !== undefined || employee?.email !== null}
+          disabled = {employee ? employee?.email !== undefined || employee?.email !== null : false}
           onChange={(e) => setEmail(e.target.value)}
           type="email"
         />
@@ -152,13 +153,13 @@ const EmployeeForm = ({ employee ,setSheetOpen}: IProps) => {
         <div className="flex gap-2">
           <Input
             type="text"
-            disabled={employee !== null}
+            disabled={employee ? true : false}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <Button
             variant={"outline"}
-            disabled={employee !== null}
+            disabled={employee ? true : false}
             onClick={generatePassword}
           >
             Auto Generate
@@ -172,11 +173,12 @@ const EmployeeForm = ({ employee ,setSheetOpen}: IProps) => {
         <Label htmlFor="username">Permissions</Label>
         <Autocomplete
           multiple
-          disabled = {status === "loading" || userpermissions.length === 0 || !userpermissions.includes("hr.manager")}
+          disabled = {status === "loading" || !isPermissionAuth}
           onChange={(e, values) =>
             setPermissions([...values.map((value) => value.value)])
           }
           options={explainedPermissions}
+          value={explainedPermissions.filter((permission)=>permissions.includes(permission.value))}
           renderInput={(params) => (
             <TextField {...params} size="small" defaultValue={permissions} />
           )}
