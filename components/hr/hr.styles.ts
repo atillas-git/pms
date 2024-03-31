@@ -1,5 +1,3 @@
-const hrStyles = {
+const hrStyles = {};
 
-}
-
-export default hrStyles
+export default hrStyles;

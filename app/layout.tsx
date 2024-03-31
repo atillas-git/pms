@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
-import {ThemeProvider} from "@mui/material";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
+import { ThemeProvider } from "@mui/material";
 import theme from "@/config/theme";
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,11 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>
-            {children}
-          </ThemeProvider>
+          <ThemeProvider theme={theme}>{children}</ThemeProvider>
         </AppRouterCacheProvider>
-        <Toaster/>
+        <Toaster />
       </body>
     </html>
   );
