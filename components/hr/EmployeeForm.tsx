@@ -13,10 +13,10 @@ import { NSession } from "@/lib/authConfig";
 
 interface IProps {
   employee?: TEmployee | null;
-  setSheetOpen :React.Dispatch<React.SetStateAction<boolean>>
+  setSheetOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const EmployeeForm = ({ employee ,setSheetOpen}: IProps) => {
+const EmployeeForm = ({ employee, setSheetOpen }: IProps) => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -27,11 +27,14 @@ const EmployeeForm = ({ employee ,setSheetOpen}: IProps) => {
 
   const { toast } = useToast();
 
-  const {data,status} = useSession();
+  const { data, status } = useSession();
 
-  const userpermissions :string [] = data ? (data as NSession).permissions : []
+  const userpermissions: string[] = data ? (data as NSession).permissions : [];
 
-  const isPermissionAuth  = userpermissions.filter((permission:string)=>["administrator","hr.manager"].includes(permission)).length>0
+  const isPermissionAuth =
+    userpermissions.filter((permission: string) =>
+      ["administrator", "hr.manager"].includes(permission),
+    ).length > 0;
   useEffect(() => {
     if (employee) {
       setUsername(employee.username);
@@ -53,13 +56,12 @@ const EmployeeForm = ({ employee ,setSheetOpen}: IProps) => {
     setPassword(newPassword);
   };
 
-
-  const handleEmployeeSave = ()=>{
-    if(employee){
-      return handleEmployeeUpdate()
+  const handleEmployeeSave = () => {
+    if (employee) {
+      return handleEmployeeUpdate();
     }
-    return handleEmployeeAdd()
-  }
+    return handleEmployeeAdd();
+  };
 
   const handleEmployeeAdd = async () => {
     setLoading(true);
@@ -78,7 +80,7 @@ const EmployeeForm = ({ employee ,setSheetOpen}: IProps) => {
         setPassword("");
         setUsername("");
         router.refresh();
-        setSheetOpen(false)
+        setSheetOpen(false);
         return toast({
           title: "Saved Successfully!",
         });
@@ -96,20 +98,20 @@ const EmployeeForm = ({ employee ,setSheetOpen}: IProps) => {
     }
   };
 
-  const handleEmployeeUpdate = async()=>{
+  const handleEmployeeUpdate = async () => {
     setLoading(true);
     try {
       const res = await fetch("/api/hr/employee", {
         method: "PUT",
         body: JSON.stringify({
-          _id:employee?._id,
+          _id: employee?._id,
           username: username,
           permissions: permissions,
         }),
       });
       if (res.ok) {
         router.refresh();
-        setSheetOpen(false)
+        setSheetOpen(false);
         return toast({
           title: "Saved Successfully!",
         });
@@ -125,7 +127,7 @@ const EmployeeForm = ({ employee ,setSheetOpen}: IProps) => {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="grid grid-cols-2 gap-2 mt-4">
@@ -143,7 +145,11 @@ const EmployeeForm = ({ employee ,setSheetOpen}: IProps) => {
         <Input
           id="email"
           value={email}
-          disabled = {employee ? employee?.email !== undefined || employee?.email !== null : false}
+          disabled={
+            employee
+              ? employee?.email !== undefined || employee?.email !== null
+              : false
+          }
           onChange={(e) => setEmail(e.target.value)}
           type="email"
         />
@@ -165,20 +171,24 @@ const EmployeeForm = ({ employee ,setSheetOpen}: IProps) => {
             Auto Generate
           </Button>
         </div>
-       {
-        employee &&  <small className="text-red-400">Passwords can not be changed once they are asssigned to the users!</small>
-       }
+        {employee && (
+          <small className="text-red-400">
+            Passwords can not be changed once they are asssigned to the users!
+          </small>
+        )}
       </div>
       <div className="col-span-2 sm:col-span-1 flex flex-col gap-2">
         <Label htmlFor="username">Permissions</Label>
         <Autocomplete
           multiple
-          disabled = {status === "loading" || !isPermissionAuth}
+          disabled={status === "loading" || !isPermissionAuth}
           onChange={(e, values) =>
             setPermissions([...values.map((value) => value.value)])
           }
           options={explainedPermissions}
-          value={explainedPermissions.filter((permission)=>permissions.includes(permission.value))}
+          value={explainedPermissions.filter((permission) =>
+            permissions.includes(permission.value),
+          )}
           renderInput={(params) => (
             <TextField {...params} size="small" defaultValue={permissions} />
           )}

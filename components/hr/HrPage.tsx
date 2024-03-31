@@ -174,9 +174,9 @@ const HrPage = ({ employees, pageCount }: IProps) => {
               {activeStep === 1 && (
                 <p className="text-xl font-semibold">Bulk Import Employees</p>
               )}
-                {activeStep === 2 && (
-                    <p className="text-xl font-semibold">Add - Edit Employee</p>
-                )}
+              {activeStep === 2 && (
+                <p className="text-xl font-semibold">Add - Edit Employee</p>
+              )}
             </div>
             <div>
               <IconButton onClick={() => setSheetOpen(false)}>
@@ -191,9 +191,17 @@ const HrPage = ({ employees, pageCount }: IProps) => {
               "You can add, edit your employee details from here."}
           </small>
           <div id="drawerContent">
-            {activeStep === 0 && <SessionProvider><EmployeeForm employee={employee} setSheetOpen = {setSheetOpen}/></SessionProvider>}
+            {activeStep === 0 && (
+              <SessionProvider>
+                <EmployeeForm employee={employee} setSheetOpen={setSheetOpen} />
+              </SessionProvider>
+            )}
             {activeStep === 1 && <BulkImportEmployeeForm />}
-            {activeStep == 2 && <SessionProvider><EmployeeForm setSheetOpen={setSheetOpen}/></SessionProvider>}
+            {activeStep == 2 && (
+              <SessionProvider>
+                <EmployeeForm setSheetOpen={setSheetOpen} />
+              </SessionProvider>
+            )}
           </div>
         </div>
       </Drawer>

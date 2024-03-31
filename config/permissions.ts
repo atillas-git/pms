@@ -5,7 +5,7 @@ const rawPermissions = [
   "hk.manager",
   "fd.employee",
   "fd.manager",
-  "administrator"
+  "administrator",
 ];
 
 export const explainedPermissions = [

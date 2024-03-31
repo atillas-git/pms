@@ -53,46 +53,46 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-    try {
-      const session: NSession | null = await getServerSession(authConfig);
-      if (!session) {
-        throw new Error("Invalid Session!");
-      }
-      if (
-        session &&
-        session.permissions &&
-        session.permissions.filter((permission: string) =>
-          ["hr.manager","administrator"].includes(permission),
-        ).length <= 0
-      ) {
-        throw new Error("Invalid Permssions");
-      }
-      type Request = {
-        _id:string
-        username: string;
-        permissions: string[];
-      };
-      const body: Request = await request.json();
-      const permissions = await Role.find({});
-  
-      const userPermssions: string[] = permissions
-        .filter((permission) => body.permissions.includes(permission.roleString))
-        .map((permission) => permission.roleString);
-      
-      await Employee.findByIdAndUpdate(body._id,{
-        username:body.username,
-        permissions:userPermssions
-      })
-
-      return new Response("Success!", {
-        status: 200,
-      });
-    } catch (error) {
-      return new Response(JSON.stringify(error), {
-        status: 500,
-      });
+  try {
+    const session: NSession | null = await getServerSession(authConfig);
+    if (!session) {
+      throw new Error("Invalid Session!");
     }
+    if (
+      session &&
+      session.permissions &&
+      session.permissions.filter((permission: string) =>
+        ["hr.manager", "administrator"].includes(permission),
+      ).length <= 0
+    ) {
+      throw new Error("Invalid Permssions");
+    }
+    type Request = {
+      _id: string;
+      username: string;
+      permissions: string[];
+    };
+    const body: Request = await request.json();
+    const permissions = await Role.find({});
+
+    const userPermssions: string[] = permissions
+      .filter((permission) => body.permissions.includes(permission.roleString))
+      .map((permission) => permission.roleString);
+
+    await Employee.findByIdAndUpdate(body._id, {
+      username: body.username,
+      permissions: userPermssions,
+    });
+
+    return new Response("Success!", {
+      status: 200,
+    });
+  } catch (error) {
+    return new Response(JSON.stringify(error), {
+      status: 500,
+    });
   }
+}
 
 export async function DELETE(request: Request) {
   try {
