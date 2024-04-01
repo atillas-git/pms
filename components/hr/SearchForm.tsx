@@ -24,9 +24,9 @@ const SearchForm = () => {
 
     const handleSearchClick = ()=>{
         const searchPar = new URLSearchParams(searchParams.toString())
-        searchPar.set("email",email)
-        searchPar.set("username",username)
-        searchPar.set("permissions",permissions.toString())
+        email && searchPar.set("email",email)
+        username && searchPar.set("username",username)
+        permissions.length>0 && searchPar.set("permissions",permissions.toString())
         router.replace(`${pathname}?${searchPar.toString()}`)
     }
 

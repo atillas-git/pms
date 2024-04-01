@@ -3,8 +3,11 @@ import React, { useState } from "react";
 import { Search } from "lucide-react";
 import modules from "@/config/modules";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 const Sidebar = () => {
   const [filter, setFilter] = useState("");
+  const pathname = usePathname()
   return (
     <div className="w-full h-full p-4 bg-zinc-800 flex flex-col gap-4 text-zinc-300">
       <div className="text-zinc-50 font-semibold text-lg border-b py-2">
@@ -38,7 +41,7 @@ const Sidebar = () => {
                       <li key={sidebarSubItem.label + sidebarSubItem.path}>
                         <Link
                           href={sidebarSubItem.path}
-                          className="flex gap-2 cursor-pointer ml-2 transition-all hover:bg-zinc-500 p-2 rounded-md"
+                          className={cn("flex gap-2 cursor-pointer ml-2 transition-all hover:bg-zinc-500 p-2 rounded-md",sidebarSubItem.path === pathname && "bg-zinc-500")}
                         >
                           {sidebarSubItem.icon}
                           {sidebarSubItem.label}
