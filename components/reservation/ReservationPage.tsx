@@ -12,6 +12,7 @@ import {
 import { CircleEllipsis,CirclePlus, Search, X } from 'lucide-react';
 import { Button } from '../ui/button'
 import { Drawer, IconButton } from '@mui/material';
+import ReservationForm from './ReservationForm';
 const ReservationPage = () => {
   const [drawerOpen,setDrawerOpen] = useState(false)
   const [activeStep,setActiveStep] = useState(0)
@@ -68,6 +69,11 @@ const ReservationPage = () => {
               <IconButton onClick={()=>setDrawerOpen(false)}>
                 <X/>
               </IconButton>
+          </div>
+          <div>
+            {
+              activeStep === 1 && <ReservationForm/>
+            }
           </div>
         </div>
       </Drawer>
